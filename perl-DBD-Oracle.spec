@@ -38,7 +38,7 @@ In any case consult the DBI documentation first!
 chmod -R u+w %{_builddir}/%{pkgname}-%{version}
 
 %build
-export ORACLE_HOME=$(dirname $(dirname $(rpm -ql oracle-%{oi_ver}-sqlplus | grep sqlplus$)))
+export ORACLE_HOME=$(dirname $(dirname $(rpm -ql oracle-%{oi_ver}-sqlplus | grep '/usr/lib/oracle/.*/sqlplus')))
 export LD_LIBRARY_PATH=$ORACLE_HOME/lib
 MKFILE=$(rpm -ql oracle-%{oi_ver}-devel | grep demo.mk)
 %{__perl} Makefile.PL -m $MKFILE INSTALLDIRS="vendor" PREFIX=%{_prefix} -V %{oi_release}
