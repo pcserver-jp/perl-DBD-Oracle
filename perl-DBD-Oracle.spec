@@ -52,7 +52,7 @@ MKFILE=$(rpm -ql oracle-%{oi_ver}-devel | grep demo.mk)
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 cat << 'EOF' > %{custom_find_req}
 #!/bin/sh
-/usr/lib/rpm/redhat/find-requires | grep -v -e 'libclntsh.so.10.1' -e 'libocci.so.10.1' -e 'libclntsh.so.11.1' -e 'libocci.so.11.1' -e 'libclntsh.so.12.1' -e 'libocci.so.12.1'
+/usr/lib/rpm/redhat/find-requires | grep -v -e 'libclntsh.so.' -e 'libocci.so.'
 EOF
 chmod 755 %{custom_find_req}
 %{__make} PREFIX=$RPM_BUILD_ROOT%{_prefix} pure_install
