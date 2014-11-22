@@ -5,6 +5,10 @@
 %{!?oi_release:%define oi_release 11.2.0.4.0}
 %define release %{oi_release}%{dist}
 %define perl_vendorarch %(eval "$(%{__perl} -V:installvendorarch)"; echo $installvendorarch)
+%define _use_internal_dependency_generator 0
+%define custom_find_req %{_tmppath}/%{pkgname}-%{version}-find-requires
+%define __find_requires %{custom_find_req}
+%define __perl_requires %{custom_find_req}
 
 Name:      %{name}
 Version:   %{version}
@@ -46,11 +50,17 @@ MKFILE=$(rpm -ql oracle-%{oi_ver}-devel | grep demo.mk)
 
 %install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+cat << 'EOF' > %{custom_find_req}
+#!/bin/sh
+/usr/lib/rpm/redhat/find-requires | grep -v -e 'libclntsh.so.10.1' -e 'libocci.so.10.1' -e 'libclntsh.so.11.1' -e 'libocci.so.11.1' -e 'libclntsh.so.12.1' -e 'libocci.so.12.1'
+EOF
+chmod 755 %{custom_find_req}
 %{__make} PREFIX=$RPM_BUILD_ROOT%{_prefix} pure_install
 rm -f $(find $RPM_BUILD_ROOT -type f -name perllocal.pod -o -name .packlist)
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -f %{custom_find_req}
 
 %files
 %defattr(-,root,root)
