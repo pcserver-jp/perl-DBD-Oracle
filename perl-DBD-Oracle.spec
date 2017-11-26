@@ -28,6 +28,7 @@ Requires:  perl(DBI) >= 1.51
 Requires:  oracle-%{oi_ver}-basic = %{oi_release}
 BuildRequires: oracle-%{oi_ver}-devel = %{oi_release}
 BuildRequires: oracle-%{oi_ver}-sqlplus = %{oi_release}
+BuildRequires: gcc
 Provides:  perl(DBD-Oracle) = %{version}
 
 %description
